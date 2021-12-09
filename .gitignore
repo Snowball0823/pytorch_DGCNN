@@ -3,3 +3,5 @@ result.txt
 extracted_features*
 *results.txt
 .*
+__pycache__
+./build

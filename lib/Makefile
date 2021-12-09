@@ -22,7 +22,7 @@ target_dep = $(addsuffix .d,$(target))
 
 all: $(target)
 
-build/dll/libgnn.so : src/gnn_lib.cpp $(objs)
+build/dll/libgnn.so: src/gnn_lib.cpp $(objs)
 	$(dir_guard)
 	$(CXX) -shared $(CXXFLAGS) -MMD -o $@ $(filter %.cpp %.o, $^) $(LDFLAGS)
 

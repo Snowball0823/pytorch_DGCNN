@@ -1,5 +1,14 @@
 #!/bin/bash
 
+cd kernel
+rm -rf libspmm.so
+make
+cd ../build
+cmake ../kernel/
+make clean & make
+cp kernel.*.so ../lib
+cd ../
+
 # input arguments
 DATA="${1-MUTAG}"  # MUTAG, ENZYMES, NCI1, NCI109, DD, PTC, PROTEINS, COLLAB, IMDBBINARY, IMDBMULTI
 fold=${2-1}  # which fold as testing data
@@ -13,13 +22,13 @@ CONV_SIZE="32-32-32-1"
 sortpooling_k=0.6  # If k <= 1, then k is set to an integer so that k% of graphs have nodes less than this integer
 FP_LEN=0  # final dense layer's input dimension, decided by data
 n_hidden=128  # final dense layer's hidden size
-bsize=1  # batch size, set to 50 or 100 to accelerate training
+bsize=50  # batch size, set to 50 or 100 to accelerate training
 dropout=True
 
 # dataset-specific settings
 case ${DATA} in
 MUTAG)
-  num_epochs=300
+  num_epochs=1
   learning_rate=0.0001
   ;;
 ENZYMES)
@@ -95,7 +104,7 @@ if [ ${fold} == 0 ]; then
   echo "Average accuracy and std are"
   tail -10 ${DATA}_acc_results.txt | awk '{ sum += $1; sum2 += $1*$1; n++ } END { if (n > 0) print sum / n; print sqrt(sum2 / n - (sum/n) * (sum/n)); }'
 else
-  CUDA_VISIBLE_DEVICES=${GPU} python main.py \
+  CUDA_VISIBLE_DEVICES=${GPU} python3 main.py \
       -seed 1 \
       -data $DATA \
       -fold $fold \

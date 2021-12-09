@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -O2 -g -DNDEBUG -fopenmp -shared  -o kernel.cpython-38-x86_64-linux-gnu.so CMakeFiles/kernel.dir/kernel_pybind.cpp.o   -L/home/datalab/Snowball/pytorch_DGCNN/kernel  -Wl,-rpath,/home/datalab/Snowball/pytorch_DGCNN/kernel -lspmm 

@@ -100,4 +100,3 @@ int PrepareSparseMatrices(void *_batch_graph,
 
     return 0;
 }
-

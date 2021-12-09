@@ -52,8 +52,10 @@ class _gnn_lib(object):
 
     def PrepareSparseMatrices(self, graph_list, is_directed=0):
         assert not is_directed
+        # --- get node number and edges --- #
         total_num_nodes, total_num_edges = self._prepare_graph(graph_list, is_directed)
         
+        # --- init tensor to get the value --- #
         n2n_idxes = torch.LongTensor(2, total_num_edges * 2)
         n2n_vals = torch.FloatTensor(total_num_edges * 2)
 
@@ -73,6 +75,7 @@ class _gnn_lib(object):
         val_list[1] = e2n_vals.numpy().ctypes.data
         val_list[2] = subg_vals.numpy().ctypes.data
 
+        # --- get n2n_idxes, n2n_vals, etc --- #
         self.lib.PrepareSparseMatrices(self.batch_graph_handle,
                                 ctypes.cast(idx_list, ctypes.c_void_p),
                                 ctypes.cast(val_list, ctypes.c_void_p))

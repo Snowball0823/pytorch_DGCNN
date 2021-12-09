@@ -63,6 +63,8 @@ class DGCNN(nn.Module):
             e2n_sp = e2n_sp.cuda()
             subg_sp = subg_sp.cuda()
             node_degs = node_degs.cuda()
+        
+        # --- make it to variable --- #
         node_feat = Variable(node_feat)
         if edge_feat is not None:
             edge_feat = Variable(edge_feat)
@@ -90,6 +92,7 @@ class DGCNN(nn.Module):
         cur_message_layer = node_feat
         cat_message_layers = []
         while lv < len(self.latent_dim):
+            # aggregate first
             n2npool = gnn_spmm(n2n_sp, cur_message_layer) + cur_message_layer  # Y = (A + I) * X
             node_linear = self.conv_params[lv](n2npool)  # Y = Y * W
             normalized_linear = node_linear.div(node_degs)  # Y = D^-1 * Y
